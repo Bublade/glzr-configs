@@ -75,13 +75,10 @@ window_behavior:
 
 workspaces:
   - name: "1"
-    # display_name: "\udb80\udd8d"
-    display_name: 'nf-md-console'
-    # display_name: "1: >_"
+    display_name: 'nf-md-console_line'
     bind_to_monitor: 0
     keep_alive: true
   - name: "2"
-    # display_name: "2: \u270E"
     display_name: "nf-dev-code"
     bind_to_monitor: 0
   - name: "3"
@@ -92,6 +89,8 @@ workspaces:
   - name: "6"
   - name: "7"
   - name: "8"
+    display_name: "nf-fa-youtube"
+    bind_to_monitor: 1
   - name: "9"
     display_name: "nf-oct-people"
     bind_to_monitor: 1
