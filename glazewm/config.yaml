@@ -77,16 +77,16 @@ workspaces:
   - name: "1"
 #    display_name: 'nf-md-console_line'
     display_name: '{"icon": "nf-md-console_line", "color": "#4f49f1"}'
-    bind_to_monitor: 1
+    bind_to_monitor: 0
     keep_alive: true
   - name: "2"
 #    display_name: "nf-cod-edit"
     display_name: '{"icon": "nf-cod-file_code", "color": "#ff0a67"}'
-    bind_to_monitor: 1
+    bind_to_monitor: 0
   - name: "3"
 #    display_name: "nf-fa-edge"
     display_name: '{"icon": "nf-fa-edge", "color": "#0781d7"}'
-    bind_to_monitor: 0
+    bind_to_monitor: 1
   - name: "4"
 #    display_name: "nf-md-note_edit"
     display_name: '{"icon": "nf-md-note_edit"}'
@@ -97,11 +97,11 @@ workspaces:
   - name: "8"
 #    display_name: "nf-fa-youtube"
     display_name: '{"icon": "nf-fa-youtube"}'
-    bind_to_monitor: 1
+    bind_to_monitor: 0
   - name: "9"
 #    display_name: "nf-oct-people"
     display_name: '{"icon": "nf-oct-people", "color": "#566be2"}'
-    bind_to_monitor: 0
+    bind_to_monitor: 1
 
 window_rules:
   - commands: ['ignore']
