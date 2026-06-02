@@ -93,7 +93,9 @@
                 workspaceDisplays[workspace.name] = JSON.parse(workspace.displayName);
             }
 
-            let display = workspaceDisplays[workspace.name];
+            const display = workspaceDisplays[workspace.name];
+            const style = display.color ? { color: display.color} : {};
+
             const classnames = classNames("workspace", {
                 focused: workspace.hasFocus,
                 displayed: workspace.displayed
@@ -108,8 +110,8 @@
                     }
                     key={workspace.name}
                 >
-                    {workspace.name}{display ?
-                    <Fragment>:&nbsp;<i className={`nf ${display.icon}`}></i></Fragment> : ""}
+                    <span className="name">{workspace.name}</span>{display ?
+                    <Fragment>&nbsp;<i className={`nf ${display.icon}`} style={style}></i></Fragment> : ""}
                 </button>
             )
         }

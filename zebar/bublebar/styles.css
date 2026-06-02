@@ -118,7 +118,12 @@ body,
     background-color: var(--black_base);
     min-width: 100vh;
 
-    &.focused,
+    &.focused {
+        background-color: var(--black_dim);
+        .name {
+            color: #64e038;
+        }
+    }
     &:hover {
         background-color: var(--gray_base);
     }
