@@ -9,6 +9,10 @@ i {
   margin-right: 7px;
 }
 
+.workspaces i.nf {
+  color: #fff;
+}
+
 body {
   color: rgb(255 255 255 / 90%);
   font-family: 'FiraCode Nerd Font Mono', ui-monospace, monospace;
