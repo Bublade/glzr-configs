@@ -25,6 +25,7 @@
 
     <script type="text/babel" data-type="module">
       import React, {
+        Fragment,
         useState,
         useEffect,
       } from 'https://esm.sh/react@18?dev';
@@ -139,8 +140,7 @@
                       }
                       key={workspace.name}
                     >
-                      {workspace.displayName ?? workspace.name}
-                    </button>
+                    {workspace.name}{workspace.displayName ? <Fragment>:&nbsp;<i className={`nf ${workspace.displayName}`}></i></Fragment> : ""}                    </button>
                   ))}
                 </div>
               )}
