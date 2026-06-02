@@ -1,15 +1,15 @@
 {
   "$schema": "https://github.com/glzr-io/zebar/raw/v3.1.0/resources/zpack-schema.json",
-  "name": "starter",
-  "version": "0.0.0",
+  "name": "bublebar",
+  "version": "0.0.1",
   "description": "",
   "tags": [],
   "previewImages": [],
   "repositoryUrl": "",
   "widgets": [
     {
-      "name": "with-glazewm",
-      "htmlPath": "./with-glazewm.html",
+      "name": "bublebar",
+      "htmlPath": "./index.html",
       "zOrder": "normal",
       "shownInTaskbar": false,
       "focused": false,
