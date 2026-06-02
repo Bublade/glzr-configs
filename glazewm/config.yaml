@@ -81,7 +81,7 @@ workspaces:
     keep_alive: true
   - name: "2"
 #    display_name: "nf-cod-edit"
-    display_name: '{"icon": "nf-cod-edit", "color": "#ff0a67"}'
+    display_name: '{"icon": "nf-cod-file_code", "color": "#ff0a67"}'
     bind_to_monitor: 1
   - name: "3"
 #    display_name: "nf-fa-edge"
