@@ -5,7 +5,7 @@ general:
 
   shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
 
-  config_reload_commands: ['shell-exec taskkill /IM zebar.exe /F',  "shell-exec zebar"]
+  # config_reload_commands: ['shell-exec taskkill /IM zebar.exe /F',  "shell-exec zebar"]
 
   # Whether to automatically focus windows underneath the cursor.
   focus_follows_cursor: false
@@ -85,6 +85,8 @@ workspaces:
     display_name: "nf-fa-edge"
     bind_to_monitor: 1
   - name: "4"
+    display_name: "nf-md-note_edit"
+    bind_to_monitor: 2
   - name: "5"
   - name: "6"
   - name: "7"
@@ -132,6 +134,10 @@ window_rules:
   - commands: ["move --workspace 3", "focus --workspace 3"]
     match:
       - window_process: { regex: "edge"}
+
+  - commands: ['move --workspace 4', 'focus --workspace 4']
+    match:
+      - window_process: { regex: 'Notion' }
 
   - commands: ["move --workspace 8", "focus --workspace 8"]
     match:
