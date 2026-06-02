@@ -140,6 +140,7 @@ window_rules:
   - commands: ['toggle-floating --centered']
     match:
       - window_title: { regex: "^([Ss]ettings|[Rr]ename|[Mm]odify|[Dd]ev[Tt]ools)" }
+        window_process: { regex: "^(webstorm64|rider64|datagrip64)"}
       # - window_title: { regex: "^([Ee]nter [Ss]olution [Ff]older [Nn]ame|[Aa]dd [Ff]ile(s)? [Tt]o [Gg]it)" }
       # - window_title: { regex: "^([Cc]reate(:)?.*|[Nn]ew(:)?.*)" }
       #   window_process: { regex: "^(webstorm64|rider64|datagrip64)"}
