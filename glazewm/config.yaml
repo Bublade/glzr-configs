@@ -135,7 +135,7 @@ window_rules:
 
   - commands: ["move --workspace 8", "focus --workspace 8"]
     match:
-      - window_title: { regex: "YouTube -.*"}
+      - window_title: { regex: "^YouTube -.*"}
         window_class: { regex: "Chrome_WidgetWin_1|MozillaDialogClass"}
 
   - commands: ["move --workspace 9"]
