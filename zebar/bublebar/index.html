@@ -33,12 +33,14 @@
     import {createRoot} from 'https://esm.sh/react-dom@18/client?dev';
     import * as zebar from 'https://esm.sh/zebar@2';
 
+    const workspaceDisplays = {}
+
     const providers = zebar.createProviderGroup({
         network: {type: 'network'},
         glazewm: {type: 'glazewm'},
         weather: {type: 'weather'},
         cpu: {type: 'cpu'},
-        date: {type: 'date', formatting: 'EEE d MMM t'},
+        date: {type: 'date', formatting: 'EEE d MMM T'},
         battery: {type: 'battery'},
         memory: {type: 'memory'},
     });
@@ -56,33 +58,16 @@
         return (
             <div className="app">
                 <div className="left">
-                    {output.glazewm && (
-                        <div className="workspaces">
-                            {output.glazewm.currentWorkspaces.map(workspace => (
-                                <button
-                                    className={`workspace ${workspace.hasFocus && 'focused'} ${workspace.isDisplayed && 'displayed'}`}
-                                    onClick={() =>
-                                        output.glazewm.runCommand(
-                                            `focus --workspace ${workspace.name}`,
-                                        )
-                                    }
-                                    key={workspace.name}
-                                >
-                                    {workspace.name}{workspace.displayName ?
-                                    <Fragment>:&nbsp;<i className={`nf ${workspace.displayName}`}></i></Fragment> : ""}
-                                </button>
-                            ))}
-                        </div>
-                    )}
+                    <div>{output.date?.formatted}</div>
                 </div>
 
                 <div className="center">
-                    {output.date?.formatted}
+                    <Workspaces output={output}/>
                 </div>
 
                 <div className="right">
                     <BindingMode output={output}/>
-                    <Network output={output} />
+                    <Network output={output}/>
                     <Memory output={output}/>
                     <Cpu output={output}/>
                     <Battery output={output}/>
@@ -92,8 +77,46 @@
         );
     }
 
-    function BindingMode({output}){
-        if (!output.glazewm){
+    function Workspaces({output}) {
+        if (!output.glazewm) {
+            return null;
+        }
+
+        return (
+            <div className="workspaces">
+                {output.glazewm.currentWorkspaces.map(Workspace)}
+            </div>
+        )
+
+        function Workspace(workspace) {
+            if (workspaceDisplays[workspace.name] === undefined) {
+                workspaceDisplays[workspace.name] = JSON.parse(workspace.displayName);
+            }
+
+            let display = workspaceDisplays[workspace.name];
+            const classnames = classNames("workspace", {
+                focused: workspace.hasFocus,
+                displayed: workspace.displayed
+            });
+            return (
+                <button
+                    className={classnames}
+                    onClick={() =>
+                        output.glazewm.runCommand(
+                            `focus --workspace ${workspace.name}`,
+                        )
+                    }
+                    key={workspace.name}
+                >
+                    {workspace.name}{display ?
+                    <Fragment>:&nbsp;<i className={`nf ${display.icon}`}></i></Fragment> : ""}
+                </button>
+            )
+        }
+    }
+
+    function BindingMode({output}) {
+        if (!output.glazewm) {
             return null;
         }
 
@@ -118,12 +141,12 @@
         );
     }
 
-    function Network({output}){
-        if (!output.network){
+    function Network({output}) {
+        if (!output.network) {
             return null;
         }
 
-        return(
+        return (
             <div className="network">
                 {getNetworkIcon(output.network)}
                 {output.network.defaultGateway?.ssid}
@@ -131,40 +154,47 @@
         );
     }
 
-    function Memory({output}){
-        if (!output.memory){
+    function Memory({output}) {
+        if (!output.memory) {
             return null;
         }
 
+        const memory = `${Math.round(output.memory.usage)}`
         return (
             <div className="memory">
                 <i className="nf nf-fae-chip"></i>
-                {Math.round(output.memory.usage)}%
+                {padNbsp(3, memory)}
+                {memory}%
             </div>
         );
     }
 
-    function Cpu({output}){
-        if (!output.cpu){
+    function Cpu({output}) {
+        if (!output.cpu) {
             return null;
         }
+
+        let usage = `${Math.round(output.cpu.usage)}`;
 
         return (
             <div className="cpu">
                 <i className="nf nf-oct-cpu"></i>
 
                 {/* Change the text color if the CPU usage is high. */}
-                <span className={output.cpu.usage > 85 ? 'high-usage' : ''} >
-                    {Math.round(output.cpu.usage)}%
+                <span className={output.cpu.usage > 85 ? 'high-usage' : ''}>
+                    {padNbsp(3, usage)}
+                    {usage}%
                 </span>
             </div>
         );
     }
 
-    function Battery({output}){
-        if (!output.battery){
+    function Battery({output}) {
+        if (!output.battery) {
             return null;
         }
+
+        const battery = `${Math.round(output.battery.chargePercent)}`
 
         return (
             <div className="battery">
@@ -173,47 +203,46 @@
                     <i className="nf nf-md-power_plug charging-icon"></i>
                 )}
                 {getBatteryIcon(output.battery)}
-                {Math.round(output.battery.chargePercent)}%
+                {padNbsp(3, battery)}
+                {battery}%
             </div>
         );
     }
 
-    function Weather({output}){
-        if (!output.weather){
+    function Weather({output}) {
+        if (!output.weather) {
             return null;
         }
-
+        const temp = `${Math.round(output.weather.celsiusTemp)}`;
         return (
             <div className="weather">
                 {getWeatherIcon(output.weather)}
-                {Math.round(output.weather.celsiusTemp)}°C
+                {padNbsp(3, temp)}
+                {temp}°C
             </div>
         );
     }
-
-    const strengths = {80: "4", 65: "3", 40: "2", 25: "1"};
-    const strks = Object.keys(strengths).sort((a, b) => b - a);
 
     function getNetworkIcon(networkOutput) {
         switch (networkOutput.defaultInterface?.type) {
             case 'ethernet':
-                return <i className="nf nf-md-ethernet_cable" />;
+                return <i className="nf nf-md-ethernet_cable"/>;
             case 'wifi':
                 const strength = networkOutput.defaultGateway?.signalStrength;
                 if (strength >= 80) {
-                    return <i className="nf nf-md-wifi_strength_4" />;
+                    return <i className="nf nf-md-wifi_strength_4"/>;
                 } else if (strength >= 65) {
-                    return <i className="nf nf-md-wifi_strength_3" />;
+                    return <i className="nf nf-md-wifi_strength_3"/>;
                 } else if (strength >= 40) {
-                    return <i className="nf nf-md-wifi_strength_2" />;
+                    return <i className="nf nf-md-wifi_strength_2"/>;
                 } else if (strength >= 25) {
-                    return <i className="nf nf-md-wifi_strength_1" />;
+                    return <i className="nf nf-md-wifi_strength_1"/>;
                 } else {
-                    return <i className="nf nf-md-wifi_strength_outline" />;
+                    return <i className="nf nf-md-wifi_strength_outline"/>;
                 }
             default:
                 return (
-                    <i className="nf nf-md-wifi_strength_off_outline" />
+                    <i className="nf nf-md-wifi_strength_off_outline"/>
                 );
         }
     }
@@ -221,44 +250,75 @@
     // Get icon to show for how much of the battery is charged.
     function getBatteryIcon(batteryOutput) {
         if (batteryOutput.chargePercent > 90)
-            return <i className="nf nf-fa-battery_4" />;
+            return <i className="nf nf-fa-battery_4"/>;
         if (batteryOutput.chargePercent > 70)
-            return <i className="nf nf-fa-battery_3" />;
+            return <i className="nf nf-fa-battery_3"/>;
         if (batteryOutput.chargePercent > 40)
-            return <i className="nf nf-fa-battery_2" />;
+            return <i className="nf nf-fa-battery_2"/>;
         if (batteryOutput.chargePercent > 20)
-            return <i className="nf nf-fa-battery_1" />;
-        return <i className="nf nf-fa-battery_0" />;
+            return <i className="nf nf-fa-battery_1"/>;
+        return <i className="nf nf-fa-battery_0"/>;
     }
 
     // Get icon to show for current weather status.
     function getWeatherIcon(weatherOutput) {
         switch (weatherOutput.status) {
             case 'clear_day':
-                return <i className="nf nf-weather-day_sunny" />;
+                return <i className="nf nf-weather-day_sunny"/>;
             case 'clear_night':
-                return <i className="nf nf-weather-night_clear" />;
+                return <i className="nf nf-weather-night_clear"/>;
             case 'cloudy_day':
-                return <i className="nf nf-weather-day_cloudy" />;
+                return <i className="nf nf-weather-day_cloudy"/>;
             case 'cloudy_night':
-                return <i className="nf nf-weather-night_alt_cloudy" />;
+                return <i className="nf nf-weather-night_alt_cloudy"/>;
             case 'light_rain_day':
-                return <i className="nf nf-weather-day_sprinkle" />;
+                return <i className="nf nf-weather-day_sprinkle"/>;
             case 'light_rain_night':
-                return <i className="nf nf-weather-night_alt_sprinkle" />;
+                return <i className="nf nf-weather-night_alt_sprinkle"/>;
             case 'heavy_rain_day':
-                return <i className="nf nf-weather-day_rain" />;
+                return <i className="nf nf-weather-day_rain"/>;
             case 'heavy_rain_night':
-                return <i className="nf nf-weather-night_alt_rain" />;
+                return <i className="nf nf-weather-night_alt_rain"/>;
             case 'snow_day':
-                return <i className="nf nf-weather-day_snow" />;
+                return <i className="nf nf-weather-day_snow"/>;
             case 'snow_night':
-                return <i className="nf nf-weather-night_alt_snow" />;
+                return <i className="nf nf-weather-night_alt_snow"/>;
             case 'thunder_day':
-                return <i className="nf nf-weather-day_lightning" />;
+                return <i className="nf nf-weather-day_lightning"/>;
             case 'thunder_night':
-                return <i className="nf nf-weather-night_alt_lightning" />;
+                return <i className="nf nf-weather-night_alt_lightning"/>;
         }
+    }
+
+    function padNbsp(length, str) {
+        const padding = length - str.length;
+        return Array(padding).fill('').map((_, i) => <Fragment key={`pad-${i}`}>&nbsp;</Fragment>);
+    }
+
+    function classNames(...params) {
+        return params.map(param => {
+            if (param === null || param === undefined) {
+                return undefined;
+            }
+
+            if (typeof param === 'string' || typeof param === 'number') {
+                return param + "";
+            }
+
+            if (Array.isArray(param)) {
+                return classNames(...param);
+            }
+
+            if (typeof param === 'object') {
+                return Object.keys(param)
+                    .filter(key => param[key])
+                    .join(" ")
+                    .trim()
+            }
+
+            return param;
+        }).filter(c => c !== "" && c !== undefined)
+            .join(" ")
     }
 
 </script>

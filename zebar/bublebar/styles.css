@@ -61,47 +61,47 @@ body,
     height: 100%;
 }
 
-#root {
-    border-bottom: 1px solid rgb(255 255 255 / 5%);
-    background: var(--black_base); /*linear-gradient(rgb(0 0 0 / 90%), rgb(5 2 20 / 85%));*/
-}
-
 .app {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
     height: 100%;
-    padding: 4px 1.5vw;
 }
 
 .left,
 .center,
 .right {
+    height: 100%;
     display: flex;
     align-items: center;
+    background-color: var(--black_base);
+}
+
+.left,
+.right {
+    padding: 0 12px;
+}
+
+.left {
+    justify-self: start;
+    border-radius: 0 40px 40px 0;
 }
 
 .center {
     justify-self: center;
+    border-radius: 40px;
 }
 
 .right {
     justify-self: end;
-}
-
-.logo,
-.binding-mode,
-.tiling-direction,
-.network,
-.memory,
-.cpu,
-.battery {
-    margin-right: 20px;
+    border-radius: 40px 0 0 40px;
 }
 
 .workspaces {
+    height: 100%;
     display: flex;
     align-items: center;
+    gap: -4px
 }
 
 .workspaces i.nf {
@@ -109,27 +109,24 @@ body,
 }
 
 .workspace {
-    background: rgb(255 255 255 / 5%);
-    margin-right: 4px;
-    padding: 4px 8px;
+    height: 100%;
+    padding: 0px 8px;
     color: inherit;
     border: none;
-    border-radius: 2px;
+    border-radius: 40px;
     cursor: pointer;
-
-    &.displayed {
-        background: rgb(255 255 255 / 15%);
-    }
+    background-color: var(--black_base);
+    min-width: 100vh;
 
     &.focused,
     &:hover {
-        background: var(--gray_base)
+        background-color: var(--gray_base);
     }
 }
 
 .binding-mode,
 .tiling-direction {
-    background: rgb(255 255 255 / 15%);
+    background: inherit;
     color: rgb(255 255 255 / 90%);
     border-radius: 2px;
     line-height: 1;
@@ -140,6 +137,16 @@ body,
 
 .binding-mode {
     margin-right: 4px;
+}
+
+.logo,
+.binding-mode,
+.tiling-direction,
+.network,
+.memory,
+.cpu,
+.battery {
+    margin-right: 20px;
 }
 
 .cpu .high-usage {

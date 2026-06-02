@@ -14,7 +14,7 @@
       "shownInTaskbar": false,
       "focused": false,
       "resizable": false,
-      "transparent": false,
+      "transparent": true,
       "includeFiles": [
         "**/**"
       ],
@@ -28,7 +28,7 @@
       "presets": [
         {
           "name": "default",
-          "anchor": "top_left",
+          "anchor": "top_center",
           "offsetX": "0px",
           "offsetY": "0px",
           "width": "100%",
