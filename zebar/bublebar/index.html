@@ -94,7 +94,7 @@
             }
 
             const display = workspaceDisplays[workspace.name];
-            const style = display.color ? { color: display.color} : {};
+            const style = display && display.color ? { color: display.color} : {};
 
             const classnames = classNames("workspace", {
                 focused: workspace.hasFocus,
