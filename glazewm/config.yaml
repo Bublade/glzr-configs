@@ -143,6 +143,10 @@ window_rules:
       - window_process: { regex: "olk|ms\\-teams" }
 
 
+  - commands: ['toggle-floating']
+    match:
+      - window_title: { regex: "^[Gg]reenshot" }
+
   - commands: ['toggle-floating --centered']
     match:
       - window_title: { regex: "^([Ss]ettings|[Rr]ename|[Mm]odify|[Dd]ev[Tt]ools)" }
