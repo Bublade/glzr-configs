@@ -131,6 +131,11 @@ window_rules:
     match:
       - window_process: { regex: "edge"}
 
+  - commands: ["move --workspace 8", "focus --workspace 8"]
+    match:
+      - window_title: { regex: "YouTube -.*"}
+        window_class: { regex: "Chrome_WidgetWin_1|MozillaDialogClass"}
+
   - commands: ["move --workspace 9"]
     match:
       - window_process: { regex: "olk|ms\\-teams" }
